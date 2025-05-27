@@ -324,11 +324,7 @@ def executar_menuAnimais():
                             continuar = input("\n🔙 Pressione Enter para continuar...")
                             break
                          else:
-<<<<<<< HEAD
-                            print("\n⚠️  ID não encontrado nos registros.")
-=======
                             print("\n⚠️ ID não encontrado nos registros.\n")
->>>>>>> b29ab459c2d4f874f13e73150b6e2780ac5104c2
                             continuar = input("\n🔙 Pressione Enter para continuar...")
                          continue
                 

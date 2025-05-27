@@ -315,16 +315,20 @@ def executar_menuAnimais():
                             dadosExistentes = {}
                         
                 while True:
-                         ID = obterInputValido("\n🆔 Digite o ID do animal que deseja alterar: ")                 
+                         ID = obterInputValido("\n🆔 Digite o ID do animal que deseja remover: ")                 
                          if ID in dadosExistentes: 
                             del dadosExistentes[ID]
                             with open(caminhoArquivoAnimal, 'w') as arquivo:
                                 json.dump(dadosExistentes, arquivo, indent=4) 
-                            print("\n🗑️  Animal removido com sucesso!")
+                            print("\n🗑️  Animal removido com sucesso!\n")
                             continuar = input("\n🔙 Pressione Enter para continuar...")
                             break
                          else:
+<<<<<<< HEAD
                             print("\n⚠️  ID não encontrado nos registros.")
+=======
+                            print("\n⚠️ ID não encontrado nos registros.\n")
+>>>>>>> b29ab459c2d4f874f13e73150b6e2780ac5104c2
                             continuar = input("\n🔙 Pressione Enter para continuar...")
                          continue
                 

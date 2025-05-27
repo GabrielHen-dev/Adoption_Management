@@ -43,7 +43,7 @@ def executar_menuAnimais():
   
         match (opcao):
             case (1):
-                    with open(caminhoArquivoAnimal, 'r+') as arquivo: 
+                    with open(caminhoArquivoAnimal, 'r') as arquivo: 
                         dados = json.load(arquivo)
                         print("\nAnimais Cadastrados:\n", json.dumps(dados, indent=4))
                     continuar = input("\nPressione Enter para continuar")
@@ -108,7 +108,7 @@ def executar_menuAnimais():
                     print("║ [8] 📝 Alterar descrição        ║")
                     print("║ [0] 🔙 Voltar                   ║")
                     print("╚═════════════════════════════════╝")
-            
+
                 def alterarAnimal(ID, nome, idade, tipo, raca, porte, sexo, vacinado, descricao): 
                    while True:
                              
@@ -154,6 +154,10 @@ def executar_menuAnimais():
                                     descricao = dadosExistentes[ID]['Descricao']
                                     )
                                 enviarDados()
+                            else:
+                                print("\n⚠️  ID não encontrado nos registros.")
+                                continuar = input("\n🔙 Pressione Enter para continuar...")
+                                
 
                         elif opcao == 2:
                             ID = obterInputValido("\n🆔 Digite o ID do animal que deseja alterar: ")                 
@@ -170,6 +174,10 @@ def executar_menuAnimais():
                                     descricao = dadosExistentes[ID]['Descricao']
                                     )
                                 enviarDados()
+                            else:
+                                print("\n⚠️  ID não encontrado nos registros.")
+                                continuar = input("\n🔙 Pressione Enter para continuar...")
+                                
 
                         elif opcao == 3:    
                             ID = obterInputValido("\n🆔 Digite o ID do animal que deseja alterar: ")                 
@@ -186,7 +194,10 @@ def executar_menuAnimais():
                                     descricao = dadosExistentes[ID]['Descricao']
                                     )
                                 enviarDados()
-
+                            else:
+                                print("\n⚠️  ID não encontrado nos registros.")
+                                continuar = input("\n🔙 Pressione Enter para continuar...")
+                                
                         elif opcao == 4:
                             ID = obterInputValido("\n🆔 Digite o ID do animal que deseja alterar: ")                 
                             if ID in dadosExistentes:     
@@ -202,6 +213,10 @@ def executar_menuAnimais():
                                     descricao = dadosExistentes[ID]['Descricao']
                                     )
                                 enviarDados()
+                            else:
+                                print("\n⚠️  ID não encontrado nos registros.")
+                                continuar = input("\n🔙 Pressione Enter para continuar...")
+                                
 
                         elif opcao == 5:
                             ID = obterInputValido("\n🆔 Digite o ID do animal que deseja alterar: ")                 
@@ -218,6 +233,10 @@ def executar_menuAnimais():
                                     descricao = dadosExistentes[ID]['Descricao']
                                     )
                                 enviarDados()
+                            else:
+                                print("\n⚠️  ID não encontrado nos registros.")
+                                continuar = input("\n🔙 Pressione Enter para continuar...")
+                                
 
                         elif opcao == 6:
                             ID = obterInputValido("\n🆔 Digite o ID do animal que deseja alterar: ")                 
@@ -234,6 +253,10 @@ def executar_menuAnimais():
                                     descricao = dadosExistentes[ID]['Descricao']
                                     )
                                 enviarDados()
+                            else:
+                                print("\n⚠️  ID não encontrado nos registros.")
+                                continuar = input("\n🔙 Pressione Enter para continuar...")
+                                
 
                         elif opcao == 7:
                             ID = obterInputValido("\n🆔 Digite o ID do animal que deseja alterar: ")                 
@@ -250,6 +273,10 @@ def executar_menuAnimais():
                                     descricao = dadosExistentes[ID]['Descricao']
                                     )
                                 enviarDados()
+                            else:
+                                print("\n⚠️  ID não encontrado nos registros.")
+                                continuar = input("\n🔙 Pressione Enter para continuar...")
+                                
 
                         elif opcao == 8:
                             ID = obterInputValido("\n🆔 Digite o ID do animal que deseja alterar: ")                 
@@ -266,6 +293,10 @@ def executar_menuAnimais():
                                     descricao = input("📝 Descreva o comportamento ou histórico (opcional): ")
                                     )
                                 enviarDados()
+                            else:
+                                print("\n⚠️  ID não encontrado nos registros.")
+                                continuar = input("\n🔙 Pressione Enter para continuar...")
+                                
 
                         elif opcao == 0:
                             break
@@ -293,7 +324,7 @@ def executar_menuAnimais():
                             continuar = input("\n🔙 Pressione Enter para continuar...")
                             break
                          else:
-                            print("\n⚠️ ID não encontrado nos registros.")
+                            print("\n⚠️  ID não encontrado nos registros.")
                             continuar = input("\n🔙 Pressione Enter para continuar...")
                          continue
                 

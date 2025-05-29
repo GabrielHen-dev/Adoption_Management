@@ -5,6 +5,7 @@ import os
 caminhoArquivoAnimal = "C:..\\Adoption_Management\\data\\Animais.json"
 caminhoArquivoAdocoes = "C:..\\Adoption_Management\\data\\Adocoes.json"
 
+
 if not os.path.exists(caminhoArquivoAdocoes):
     with open(caminhoArquivoAdocoes, 'w') as arquivo:
         json.dump({}, arquivo)

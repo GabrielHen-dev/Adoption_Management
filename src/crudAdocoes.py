@@ -31,79 +31,88 @@ def executar_menuAdocoes():
         mostrar_menuAdocoes()
         escolhaOpcao = int(input('Escolha uma das opções: '))
 
+        try:
+            escolhaOpcao = int(escolhaOpcao)
+        except ValueError:
+            print('Por favor, digite um número válido.')
+            continue
+
         match(escolhaOpcao):
             case 1:
                 while True:
                         choice = int(input('Deseja adotar um animal?(1-Sim / 2-Não): '))
                         if choice == 1:
-                            with open(caminhoArquivoAnimal, 'r') as arquivo:
-                                dados = json.load(arquivo)
-                                print("\n---Animais para Adoção----\n", json.dumps(dados, indent=4))
-
-                                cpf = input('Insira o seu cpf: ')
-
-                                with open(caminhoArquivoVoluntario,'r') as arquivo:
-                                    dados = json.load(arquivo)
-
-                                if cpf not in dados:
-                                    print('CPF não encontrado. Cadastre-se primeiro.')
-                                    return
-
-                                id = input('Selecione o ID do animal que deseja adotar: ')
+                            try:
                                 with open(caminhoArquivoAnimal, 'r') as arquivo:
-                                    dadosExistentes = json.load(arquivo)
-                                    if id not in dadosExistentes:
-                                        print(f'Id {id} não encontrado')
-                                        return
+                                    dados = json.load(arquivo)
+                                    print("\n---Animais para Adoção----\n", json.dumps(dados, indent=4))
 
-                                usuarios = {
-                                    'nome': usuarios[cpf]['nome'],
-                                    'contato': usuarios[cpf]['contato'],
-                                    'email': usuarios[cpf]['email']
-                                }
-                                animais = {
-                                    'nome': animais[id]['nome'],
-                                    'idade': animais[id]['idade'],
-                                    'tipo': animais[id]['tipo'],
-                                    'raça': animais[id]['raça'],
-                                    'sexo': animais[id]['sexo']
-                                }
-                                # Cria registro de adoção
-                                adocao = {
-                                    'cpf_adotante': cpf,
-                                    'id_animal': id,
-                                    'dados_usuario': usuarios,
-                                    'dados_animal': animais,
-                                    'status-adocao': 'Concluída'
-                                }
+                                    cpf = input('Insira o seu cpf: ')
 
-                                # Carrega ou cria arquivo de adoções
-                                try:
-                                    with open(caminhoArquivoAdocoes, 'r') as arquivo_adocoes:
-                                        adocoes = json.load(arquivo_adocoes)
-                                except FileNotFoundError:
-                                    adocoes = {}
+                                    with open(caminhoArquivoVoluntario,'r') as arquivo:
+                                        dados = json.load(arquivo)
 
-                                    # Determina o próximo ID disponível
-                                    if adocoes:
-                                        # Pega o maior ID existente e soma 1
-                                        proximo_id = max(int(k) for k in adocoes.keys()) + 1
-                                    else:
-                                        # Primeira adoção
-                                        proximo_id = 1
+                                    if cpf not in dados:
+                                        print('CPF não encontrado. Cadastre-se primeiro.')
+                                        break
 
-                                    # Adiciona nova adoção com ID numérico sequencial
-                                    adocoes[str(proximo_id)] = adocao
-                                    print(f'Seu número de Id de adoção é {adocoes[str(proximo_id)]}')
+                                    id = input('Selecione o ID do animal que deseja adotar: ')
+                                    with open(caminhoArquivoAnimal, 'r') as arquivo:
+                                        dadosExistentes = json.load(arquivo)
+                                        if id not in dadosExistentes:
+                                            print(f'Id {id} não encontrado')
+                                            break
 
-                                # Salva no arquivo
-                                with open(caminhoArquivoAdocoes, 'w') as arquivo_adocoes:
-                                    json.dump(adocoes, arquivo_adocoes, indent=4)
+                                    usuarios = {
+                                        'nome': dados[cpf]['nome'],
+                                        'contato': dados[cpf]['contato'],
+                                        'email': dados[cpf]['email']
+                                    }
+                                    animais = {
+                                        'nome': dadosExistentes[id]['nome'],
+                                        'idade': dadosExistentes[id]['idade'],
+                                        'tipo': dadosExistentes[id]['tipo'],
+                                        'raça': dadosExistentes[id]['raça'],
+                                        'sexo': dadosExistentes[id]['sexo']
+                                    }
+                                    # Cria registro de adoção
+                                    adocao = {
+                                        'cpf_adotante': cpf,
+                                        'id_animal': id,
+                                        'dados_usuario': usuarios,
+                                        'dados_animal': animais,
+                                        'status-adocao': 'Concluída'
+                                    }
 
-                                print("\n--- Adoção realizada com sucesso! ---")
-                                print(f"Animal: {animais['nome']}")
-                                print(f"Adotante: {usuarios['nome']}")
-                                print("Detalhes da adoção foram armazenados.")
+                                    # Carrega ou cria arquivo de adoções
+                                    try:
+                                        with open(caminhoArquivoAdocoes, 'r') as arquivo:
+                                            adocoes = json.load(arquivo)
+                                    except (FileNotFoundError, json.JSONDecodeError):
+                                        adocoes = {}
+
+                                        # Determina o próximo ID disponível
+                                        if adocoes:
+                                            # Pega o maior ID existente e soma 1
+                                            proximo_id = max(int(k) for k in adocoes.keys()) + 1
+                                        else:
+                                            # Primeira adoção
+                                            proximo_id = 1
+
+                                        # Adiciona nova adoção com ID numérico sequencial
+                                        adocoes[str(proximo_id)] = adocao
+                                        print(f'Seu número de Id de adoção é {adocoes[str(proximo_id)]}')
+
+                                    # Salva no arquivo
+                                    with open(caminhoArquivoAdocoes, 'w') as arquivo:
+                                        json.dump(adocoes, arquivo, indent=4)
+
+                                    print("\n--- Adoção realizada com sucesso! ---")
+                                    print(f"Animal: {animais['nome']}")
+                                    print(f"Adotante: {usuarios['nome']}")
+                                    print("Detalhes da adoção foram armazenados.")
+                            except Exception as e:
+                                print(f'Ocorreu um erro: {str(e)}')
 
                         elif choice == 2:
                             print('Voltando ao menu principal...')

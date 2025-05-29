@@ -2,6 +2,7 @@ import json
 import os
 
 
+caminhoArquivoAnimal = "C:..\\Adoption_Management\\data\\Animais.json"
 caminhoArquivoAdocoes = "C:..\\Adoption_Management\\data\\Adocoes.json"
 
 if not os.path.exists(caminhoArquivoAdocoes):
@@ -68,4 +69,3 @@ def executar_menuAdocoes():
             case _:
                 print('Opção inválida, tente novamente...')
 
-executar_menuAdocoes()

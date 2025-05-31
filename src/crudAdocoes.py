@@ -4,24 +4,55 @@ import os
 
 caminhoArquivoAnimal = "C:..\\Adoption_Management\\data\\Animais.json"
 caminhoArquivoAdocoes = "C:..\\Adoption_Management\\data\\Adocoes.json"
-caminhoArquivoVoluntario = "C:..\\Adoption_Management\\data\\Voluntario.json"
+caminhoArquivoadotantes = "C:..\\Adoption_Management\\data\\Adotantes.json"
 
 idAdocao = 0
+logado = False
+
 if not os.path.exists(caminhoArquivoAdocoes):
     with open(caminhoArquivoAdocoes, 'w') as arquivo:
         json.dump({}, arquivo)
 
 def mostrar_menuAdocoes():
     print("╔═════════════════════════════════╗")
-    print("║      🏠 MENU DE ADOÇÔES 🐶🐱   ║")
+    print("║       🐱 MENU DE ADOCOES 🐶     ║")
     print("╠═════════════════════════════════╣")
-    print("║ [1] 📝 Registrar nova adoção    ║")
-    print("║ [2] 📋 Listar todas as adoções  ║")
-    print("║ [3] 🔄 Atualizar adoção         ║")
-    print("║ [4] 🧠 Adoção inteligente       ║")
-    print("║ [5] ❌ Remover adoção           ║")
+    print("║ [1] 🏠 Fazer Login              ║")
+    print("║ [2] 📝 Registrar adoção         ║")
+    print("║ [3] 📋 Listar todas as adoções  ║")
+    print("║ [4] 🔄 Atualizar adoção         ║")
+    print("║ [5] 🧠 Adoção inteligente       ║")
+    print("║ [6] ❌ Remover adoção           ║")
     print("║ [0] ↩️ Voltar ao menu principal ║")
     print("╚═════════════════════════════════╝")
+
+def login_usuario():
+    while True:
+        global logado
+        with open(caminhoArquivoadotantes, 'r') as arquivo:
+            try:
+                dadosexistentes = json.load(arquivo)
+            except json.JSONDecodeError:
+                dadosexistentes = {}
+
+        print('=======Login=======')
+        cpf = input('Insira seu CPF --> ')
+        senha = input('Insira sua senha --> ')
+
+        if cpf in dadosexistentes:
+
+            if senha == dadosexistentes[cpf]['senha']:
+                print('Login realizado...')
+                logado = True
+                break
+
+            else:
+                print('Senha Incorreta, tente novamente...')
+                logado = False
+
+        else:
+            print('- Usuário não cadastrado, tente novamente...')
+        continuar = input('\n🔙 Pressione enter para continuar.')
 
 
 def executar_menuAdocoes():
@@ -39,21 +70,31 @@ def executar_menuAdocoes():
 
         match(escolhaOpcao):
             case 1:
+                if logado == False:
+                    login_usuario()
+                else:
+                    print('Você já está logado, voltando ao menu...')
+                    break
+            case 2:
                 while True:
-                        choice = int(input('Deseja adotar um animal?(1-Sim / 2-Não): '))
+                        if logado == False:
+                            print('Você não está logado, realize o login')
+                            print('Voltando ao menu...')
+                            break
+                        choice = int(input('Registrar adoção, confirma?(1-Sim / 2-Não): '))
                         if choice == 1:
                             try:
                                 with open(caminhoArquivoAnimal, 'r') as arquivo:
-                                    dados = json.load(arquivo)
+                                    dadosexistentes = json.load(arquivo)
                                     print("\n---Animais para Adoção----\n", json.dumps(dados, indent=4))
 
                                     cpf = input('Insira o seu cpf: ')
 
-                                    with open(caminhoArquivoVoluntario,'r') as arquivo:
-                                        dados = json.load(arquivo)
+                                    with open(caminhoArquivoadotantes,'r') as arquivo:
+                                        dadosexistentes = json.load(arquivo)
 
                                     if cpf not in dados:
-                                        print('CPF não encontrado. Cadastre-se primeiro.')
+                                        print('CPF não encontrado ou dados estão incorretos.')
                                         break
 
                                     id = input('Selecione o ID do animal que deseja adotar: ')
@@ -63,10 +104,16 @@ def executar_menuAdocoes():
                                             print(f'Id {id} não encontrado')
                                             break
 
+                                    with open(caminhoArquivoAdocoes, 'r') as arquivo:
+                                        adocoes = json.load(arquivo)
+                                        if id in adocoes:
+                                            print('O animal não está disponível para adoção')
+                                            break
+
                                     usuarios = {
-                                        'nome': dados[cpf]['nome'],
-                                        'contato': dados[cpf]['contato'],
-                                        'email': dados[cpf]['email']
+                                        'nome': dadosexistentes[cpf]['nome'],
+                                        'contato': dadosexistentes[cpf]['contato'],
+                                        'email': dadosexistentes[cpf]['email']
                                     }
                                     animais = {
                                         'nome': dadosExistentes[id]['nome'],
@@ -120,16 +167,32 @@ def executar_menuAdocoes():
 
                         else:
                             print('Opção inválida, tente novamente...')
-            case 2:
+            case 3:
+                if logado == False:
+                    print('Você não está logado, realize o login')
+                    print('Voltando ao menu...')
+                    break
                 with open(caminhoArquivoAdocoes, 'r') as arquivo:
                     dados = json.load(arquivo)
-                print(dados)
-            case 3:
-                print('a')
+                    print("\n---Adoções registradas----\n", json.dumps(dados, indent=4))
             case 4:
-                print('a')
+                if logado == False:
+                    print('Você não está logado, realize o login')
+                    print('Voltando ao menu...')
+                    break
+                id = input('Digite o seu Id: ')
+                if id in adocoes:
+                    adocoes[id]['status-adocao'] = input('Insira o status da adoção: ')
             case 5:
-                print('a')
+                if logado == False:
+                    print('Você não está logado, realize o login')
+                    print('Voltando ao menu...')
+                    break
+            case 6:
+                if logado == False:
+                    print('Você não está logado, realize o login')
+                    print('Voltando ao menu...')
+                    break
             case 0:
                 print('Voltando ao menu principal...')
                 break

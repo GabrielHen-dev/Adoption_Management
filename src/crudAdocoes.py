@@ -58,6 +58,7 @@ def login_usuario():
 def executar_menuAdocoes():
     while True:
         global idAdocao
+        global logado
         os.system('cls' if os.name == 'nt' else 'clear')
         mostrar_menuAdocoes()
         escolhaOpcao = int(input('Escolha uma das opções: '))
@@ -180,9 +181,17 @@ def executar_menuAdocoes():
                     print('Você não está logado, realize o login')
                     print('Voltando ao menu...')
                     break
-                id = input('Digite o seu Id: ')
+                id = input('Insira o ID da adoção: ')
+                with open(caminhoArquivoAdocoes, 'r') as arquivo:
+                    adocoes = json.load(arquivo)
                 if id in adocoes:
                     adocoes[id]['status-adocao'] = input('Insira o status da adoção: ')
+                    print('Salvando alteração...')
+                    with open(caminhoArquivoAdocoes, 'w') as arquivo:
+                        json.dump(adocoes, arquivo, indent=4)
+
+                else:
+                    print('ID não encontrado, tente novamente...')
             case 5:
                 if logado == False:
                     print('Você não está logado, realize o login')
@@ -193,6 +202,14 @@ def executar_menuAdocoes():
                     print('Você não está logado, realize o login')
                     print('Voltando ao menu...')
                     break
+                id = input('Insira o ID da adoção: ')
+                with open(caminhoArquivoAdocoes, 'r') as arquivo:
+                    adocoes = json.load(arquivo)
+                if id in adocoes:
+                    adocoes.pop(id)
+                    with open(caminhoArquivoAdocoes, 'w') as arquivo:
+                        json.dump(adocoes, arquivo, indent=4)
+
             case 0:
                 print('Voltando ao menu principal...')
                 break

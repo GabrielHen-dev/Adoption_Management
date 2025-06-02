@@ -9,6 +9,7 @@ if not os.path.exists(caminhoArquivoadotantes):
 
 
 def obterInputValido(mensagem, tipo=str):
+     
      while True:
           entrada = input(mensagem).strip()
 
@@ -49,7 +50,9 @@ def menuadotantes():
 while True:
      menuadotantes()
      match (opcao):
-          case (1): # Não completo
+          case (1): # completo com verificação
+
+
                def menucadastro():
                     
                     nome = obterInputValido('- Digite seu nome completo --> ')
@@ -77,80 +80,85 @@ while True:
                print("\n✅ Usuário cadastrado com sucesso!\n")
                continuar = input('\n🔙 Pressione enter para continuar.')
 
-          case (2): #completo
+
+          case (2): # completo 
+
                
                with open(caminhoArquivoadotantes,'r') as arquivo:
                     dados = json.load(arquivo)
                     print ('- Os usuários cadastrados são: \n',json.dumps(dados,indent=4))
                     continuar = input('\n🔙 Pressione enter para continuar.')
 
-        
 
-          case (3): #Não completo 
+          case (3): # completo com verificação
+
+
                with open(caminhoArquivoadotantes, 'r') as arquivo:
                     try: 
                          dadosexistentes = json.load(arquivo) 
                     except json.JSONDecodeError:
                          dadosexistentes = {}
-               cpfalterar= input('Digite o CPf do usuário que vai ter os dados atualizados -->')
-
-               def menualterar():
-                    os.system('cls' if os.name == 'nt' else 'clear') 
+               
+               def menuAlterar():
                     print("╔═════════════════════════════════╗")
                     print("║       🐾 ALTERAR ANIMAL         ║")
                     print("╠═════════════════════════════════╣")
                     print("║ [1] Alterar nome                ║")
                     print("║ [2] Alterar idade               ║")
                     print("║ [3] Alterar Contato             ║")
-                    print("║ [4] Alterar CPF                 ║")
-                    print("║ [5] Alterar E-mail              ║")
-                    print("║ [6] Alterar senha               ║")
+                    print("║ [4] Alterar E-mail              ║")
+                    print("║ [5] Alterar senha               ║")
                     print("║ [0] Voltar                      ║")
                     print("╚═════════════════════════════════╝")
                          
-               
 
-               def alterarUsuario(nome,idade,contato,cpf,email,senha):
+               cpf = obterInputValido('Insira o cpf do pessoa que deseja atualizar -->')
 
-                    return{ 
-                         f'{cpf}':{
-                              'Nome': f'{nome}',
-                              'Idade': f'{idade}',
-                              'Contato': f'{contato}',
-                              'E-mail':f'{email}',
-                              'senha':f'{senha}'
-                              }
-                         }
-
-               def enviarDados():
-                    dadosexistentes.updade(alterar_usuario)
-                    with open(caminhoArquivoadotantes, 'w') as arquivo:
-                         json.dump(dadosexistentes,arquivo,indent=4)
-                    print("\n✅ Informações atualizadas com sucesso!\n")
+               if cpf not in dadosexistentes:
+                    print('-\n❌ CPF não existente na base de dados.')
+                    continuar = input("\n🔙 Pressione Enter para continuar...")
+                    continue
 
 
-               def alterarInput():
-                    global alterar_usuario
+               else:
                     while True:
-                         menualterar()
-                         opcao = obterInputValido('\n👉 Digite a opção desejada: ')
-
-                         match(opcao):
-
-                              case (1):
-                                   cpf = input('Digite o CPF da pessoa que deseja alterar -->')
-
-                                   if cpf in dadosexistentes:
-                                        alterar_usuario = alterarUsuario
-
+                         menuAlterar()
+                         opcao2 = obterInputValido('👉 Digite a atualização desejada--> ')
                          
+                         if opcao == '0':
+                              print('Saindo...')
+                              continuar = input("\n🔙 Pressione Enter para continuar...")
+                              break
 
-          
+                         elif opcao2 == '1':
+                              dadosexistentes[cpf]['nome'] = obterInputValido('- Alterar nome -->')
+
+                         elif opcao2 == '2':
+                              dadosexistentes[cpf]['idade'] = obterInputValido('- Alterar idade -->')
+
+                         elif opcao2 == '3':
+                              dadosexistentes[cpf]['contato'] = obterInputValido('- Alterar contato -->')
+
+                         elif opcao2 == '4':
+                              dadosexistentes[cpf]['email'] = obterInputValido('- Alterar E-mail -->')
+
+                         elif opcao2 == '5':
+                              dadosexistentes[cpf]['senha'] = obterInputValido('- Alterar senha -->')
+
+                         else:
+                              print('\n ❌ Opcão inválida ❌')
+                              continuar = input("\n🔙 Pressione Enter para continuar...")
+                              continue
 
 
-              
+                         with open(caminhoArquivoadotantes, 'w') as arquivo:
+                              json.dump(dadosexistentes,arquivo,indent=4)
+                         print('\n✅ Alterações salvas!')
+                         continuar = input("\n🔙 Pressione Enter...")
+                         break
 
-          case(4): #NÃO FEITO(adoção inteligente)
+
+          case(4): #NÃO FEITO (adoção inteligente)
                
                print
 
@@ -182,7 +190,8 @@ while True:
                          
                
 
-          case _:
+          case _: #Completo
+
                print('Opção inválida!')
                continue
           

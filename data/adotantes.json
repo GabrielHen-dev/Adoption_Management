@@ -4,6 +4,11 @@
         "idade": "19",
         "contato": "81997329341",
         "email": "Gabs@gmail.com",
-        "senha": "Salve999"
+        "senha": "Salve999",
+        "preferencias": {
+            "tipo": "cachorro",
+            "porte": "pequeno",
+            "sexo": "macho"
+        }
     }
 }

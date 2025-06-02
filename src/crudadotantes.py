@@ -131,7 +131,7 @@ def executar_menuAdotantes():
                          menuAlterar()
                          opcao2 = obterInputValido('👉 Digite a atualização desejada--> ')
                          
-                         if opcao == '0':
+                         if opcao2 == '0':
                               print('Saindo...')
                               continuar = input("\n🔙 Pressione Enter para continuar...")
                               break
@@ -199,8 +199,6 @@ def executar_menuAdotantes():
                     print('CPF não encontrado.')
                     input('\n🔙 Pressione enter para continuar.')
 
-
-
           case(5):
                
                while True:
@@ -224,7 +222,11 @@ def executar_menuAdotantes():
                          print('\n ===== Esse usuário não existe! =====')
                          continuar = input('\n🔙 Pressione enter para continuar.')
                          break
-
+          case (0):
+               print("\n👋 Voltando ao menu principal...")
+               input("Pressione Enter para continuar...")
+               break
+          
           case _:
 
                print('Opção Inválida!')

@@ -110,7 +110,6 @@ def executar_menuAnimais():
                     print("╚═════════════════════════════════╝")
 
                 def alterarAnimal(ID, nome, idade, tipo, raca, porte, sexo, vacinado, descricao): 
-                   while True:
                              
                     return {
                         f'{ID}': {
@@ -155,7 +154,7 @@ def executar_menuAnimais():
                                     )
                                 enviarDados()
                             else:
-                                print("\n⚠️  ID não encontrado nos registros.")
+                                print("\n⚠️ ID não encontrado nos registros.")
                                 continuar = input("\n🔙 Pressione Enter para continuar...")
                                 
 
@@ -315,20 +314,16 @@ def executar_menuAnimais():
                             dadosExistentes = {}
                         
                 while True:
-                         ID = obterInputValido("\n🆔 Digite o ID do animal que deseja remover: ")                 
+                         ID = obterInputValido("\n🆔 Digite o ID do animal que deseja alterar: ")                 
                          if ID in dadosExistentes: 
                             del dadosExistentes[ID]
                             with open(caminhoArquivoAnimal, 'w') as arquivo:
                                 json.dump(dadosExistentes, arquivo, indent=4) 
-                            print("\n🗑️  Animal removido com sucesso!\n")
+                            print("\n🗑️  Animal removido com sucesso!")
                             continuar = input("\n🔙 Pressione Enter para continuar...")
                             break
                          else:
-<<<<<<< HEAD
                             print("\n⚠️  ID não encontrado nos registros.")
-=======
-                            print("\n⚠️ ID não encontrado nos registros.\n")
->>>>>>> b29ab459c2d4f874f13e73150b6e2780ac5104c2
                             continuar = input("\n🔙 Pressione Enter para continuar...")
                          continue
                 

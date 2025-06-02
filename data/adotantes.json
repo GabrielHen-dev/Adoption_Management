@@ -6,9 +6,9 @@
         "email": "Gabs@gmail.com",
         "senha": "Salve999",
         "preferencias": {
-            "tipo": "cachorro",
+            "tipo": "gato",
             "porte": "pequeno",
-            "sexo": "macho"
+            "sexo": "f\u00eamea"
         }
     }
 }

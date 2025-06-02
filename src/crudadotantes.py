@@ -24,7 +24,8 @@ def obterInputValido(mensagem, tipo=str):
                     print("\n❌ Digite um número válido.\n")
                     continue
           return entrada
-
+     
+     
 def buscar_animais_preferidos(preferencias, caminho_animais):
       
      with open(caminho_animais, 'r') as arq:
@@ -39,7 +40,8 @@ def buscar_animais_preferidos(preferencias, caminho_animais):
           ):
                encontrados.append({id_animal: animal})
      return encontrados
-     
+ 
+ 
 def menuadotantes():
         os.system('cls' if os.name == 'nt' else 'clear')
         print("\033[1;36m")  
@@ -196,6 +198,7 @@ def executar_menuAdotantes():
                else:
                     print('CPF não encontrado.')
                     input('\n🔙 Pressione enter para continuar.')
+
 
 
           case(5):

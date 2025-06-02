@@ -1,4 +1,5 @@
 import os
+import src.crudAdocoes as crudAdocao
 import src.crudAnimal as crudAnimal # importa os cruds
 
 def mostrar_menu():
@@ -24,25 +25,20 @@ def executar_menu():
                 crudAnimal.executar_menuAnimais()
                         
             case (2):
-                print("salve")
-
-
-                #Coloca o crud aqui!!!
+                print("Salve")
 
 
 
             case (3):
-                print("Salve")
-
-                #Coloca o crud aqui!!!
+                crudAdocao.executar_menuAdocoes()#Coloca o crud aqui!!!
 
 
 
             case (0):
                 print("\nSaindo do sistema... 👋")
                 break
-            
-executar_menu() #Executa os dois 
+
+executar_menu() #Executa os dois
 
 """
 def mostrar_menuUsuarios():

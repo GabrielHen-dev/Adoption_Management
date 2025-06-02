@@ -2,7 +2,8 @@ import json
 import os  
 import uuid 
 
-caminhoArquivoAnimal = "C:..\\Adoption_Management\\data\\Animais.json" 
+
+caminhoArquivoAnimal = "C:..\\Adoption_Management\\data\\Animais.json"
 
 if not os.path.exists(caminhoArquivoAnimal):
     with open(caminhoArquivoAnimal, 'w') as arquivo: 
@@ -323,7 +324,7 @@ def executar_menuAnimais():
                             continuar = input("\n🔙 Pressione Enter para continuar...")
                             break
                          else:
-                            print("\n⚠️  ID não encontrado nos registros.")
+                            print("\n⚠️ ID não encontrado nos registros.\n")
                             continuar = input("\n🔙 Pressione Enter para continuar...")
                          continue
                 

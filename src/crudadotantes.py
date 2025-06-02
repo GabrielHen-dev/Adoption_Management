@@ -24,6 +24,21 @@ def obterInputValido(mensagem, tipo=str):
                     print("\n❌ Digite um número válido.\n")
                     continue
           return entrada
+
+def buscar_animais_preferidos(preferencias, caminho_animais):
+      
+     with open(caminho_animais, 'r') as arq:
+          dados_animais = json.load(arq)
+
+     encontrados = []
+     for id_animal, animal in dados_animais.items():
+          if (
+               animal['Tipo'].lower() == preferencias['tipo']
+               and animal['Porte'].lower() == preferencias['porte']
+               and animal['Sexo'].lower() == preferencias['sexo']
+          ):
+               encontrados.append({id_animal: animal})
+     return encontrados
      
 def menuadotantes():
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -146,9 +161,41 @@ def executar_menuAdotantes():
                          continuar = input("\n🔙 Pressione Enter...")
                          break
 
-          case(4): #NÃO FEITO (adoção inteligente)
-               
-               print
+          case (4):
+               with open(caminhoArquivoadotantes, 'r') as arquivo:
+                    adotantes = json.load(arquivo)
+
+               cpf = input('Digite seu CPF: ')
+               if cpf in adotantes:
+                    tipo = input('Tipo desejado (ex: cachorro, gato): ').lower()
+                    porte = input('Porte (pequeno, médio, grande): ').lower()
+                    sexo = input('Sexo (macho/fêmea): ').lower()
+
+                    preferencias = {
+                        'tipo': tipo,
+                        'porte': porte,
+                        'sexo': sexo
+                    }
+
+                    adotantes[cpf]['preferencias'] = preferencias
+
+                    with open(caminhoArquivoadotantes, 'w') as arquivo:
+                         json.dump(adotantes, arquivo, indent=4)
+
+                    print('\nPreferências registradas.')
+
+                    caminho_animais = os.path.join('..', 'data', 'Animais.json')
+                    sugeridos = buscar_animais_preferidos(preferencias, caminho_animais)
+
+                    if sugeridos:
+                         print('\nAnimais compatíveis:')
+                         for animal in sugeridos:
+                              print(json.dumps(animal, indent=4))
+                    else:
+                         print('\nNenhum animal disponível corresponde ao perfil desejado.')
+               else:
+                    print('CPF não encontrado.')
+                    input('\n🔙 Pressione enter para continuar.')
 
 
           case(5):

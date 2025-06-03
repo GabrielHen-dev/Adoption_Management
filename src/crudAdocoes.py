@@ -137,17 +137,17 @@ def executar_menuAdocoes():
                                         except (FileNotFoundError, json.JSONDecodeError):
                                             adocoes = {}
 
-                                            # Determina o próximo ID disponível
-                                            if adocoes:
-                                                # Pega o maior ID existente e soma 1
-                                                proximo_id = max(int(k) for k in adocoes.keys()) + 1
-                                            else:
-                                                # Primeira adoção
-                                                proximo_id = 1
+                                        # Determina o próximo ID disponível
+                                        if adocoes:
+                                            # Pega o maior ID existente e soma 1
+                                            proximo_id = max(int(k) for k in adocoes.keys()) + 1
+                                        else:
+                                            # Primeira adoção
+                                            proximo_id = 1
 
-                                            # Adiciona nova adoção com ID numérico sequencial
-                                            adocoes[str(proximo_id)] = adocao
-                                            print(f'Seu número de Id de adoção é {adocoes[str(proximo_id)]}')
+                                        # Adiciona nova adoção com ID numérico sequencial
+                                        adocoes[str(proximo_id)] = adocao
+                                        print(f'Seu número de Id de adoção é {proximo_id}')
 
                                         # Salva no arquivo
                                         with open(caminhoArquivoAdocoes, 'w') as arquivo:
@@ -204,6 +204,7 @@ def executar_menuAdocoes():
                         adocoes.pop(id)
                         with open(caminhoArquivoAdocoes, 'w') as arquivo:
                             json.dump(adocoes, arquivo, indent=4)
+                        print('Apagando adocao, voltando ao menu...')
                 else:
                     print('Você não está logado, realize o login')
 

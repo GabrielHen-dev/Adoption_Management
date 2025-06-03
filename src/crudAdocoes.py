@@ -94,18 +94,24 @@ def executar_menuAdocoes():
                                             print('CPF não encontrado ou dados estão incorretos.')
                                             break
 
-                                        id = input('Selecione o ID do animal que deseja adotar: ')
+                                        id_animal = input('Selecione o ID do animal que deseja adotar: ')
                                         with open(caminhoArquivoAnimal, 'r') as arquivo:
                                             dadosExistentes = json.load(arquivo)
-                                            if id not in dadosExistentes:
-                                                print(f'Id {id} não encontrado')
+                                            if id_animal not in dadosExistentes:
+                                                print(f'Id {id_animal} não encontrado')
                                                 break
 
+                                        animal_disponivel = True
                                         with open(caminhoArquivoAdocoes, 'r') as arquivo:
                                             adocoes = json.load(arquivo)
-                                            if id in adocoes:
-                                                print('O animal não está disponível para adoção')
-                                                break
+                                            for adocao in adocoes.values():
+                                                if adocao["id_animal"] == id_animal:
+                                                    print('O animal não está disponível para adoção')
+                                                    animal_disponivel = False
+                                                    break
+
+                                        if not animal_disponivel:
+                                            break
 
                                         usuarios = {
                                             "nome": dados[cpf]["nome"],
@@ -114,17 +120,17 @@ def executar_menuAdocoes():
                                         }
 
                                         animais = {
-                                            "nome": dadosExistentes[id]["Nome"],
-                                            "idade": dadosExistentes[id]["Idade"],
-                                            "tipo": dadosExistentes[id]["Tipo"],
-                                            "raça": dadosExistentes[id]["Raca"],
-                                            "sexo": dadosExistentes[id]["Sexo"]
+                                            "nome": dadosExistentes[id_animal]["Nome"],
+                                            "idade": dadosExistentes[id_animal]["Idade"],
+                                            "tipo": dadosExistentes[id_animal]["Tipo"],
+                                            "raça": dadosExistentes[id_animal]["Raca"],
+                                            "sexo": dadosExistentes[id_animal]["Sexo"]
                                         }
 
                                         # Cria registro de adoção
                                         adocao = {
                                             "cpf_adotante": cpf,
-                                            "id_animal": id,
+                                            "id_animal": id_animal,
                                             "dados_usuario": usuarios,
                                             "dados_animal": animais,
                                             "status-adocao": "Concluída"
@@ -147,13 +153,13 @@ def executar_menuAdocoes():
 
                                         # Adiciona nova adoção com ID numérico sequencial
                                         adocoes[str(proximo_id)] = adocao
-                                        print(f'Seu número de Id de adoção é {proximo_id}')
 
                                         # Salva no arquivo
                                         with open(caminhoArquivoAdocoes, 'w') as arquivo:
                                             json.dump(adocoes, arquivo, indent=4)
 
                                         print("\n--- Adoção realizada com sucesso! ---")
+                                        print(f'Seu número de Id de adoção é {proximo_id}')
                                         print(f"Animal: {animais["nome"]}")
                                         print(f"Adotante: {usuarios["nome"]}")
                                         print("Detalhes da adoção foram armazenados.")
@@ -194,7 +200,45 @@ def executar_menuAdocoes():
                 else:
                     print('Você não está logado, realize o login')
             case 5:
-                print('a')
+                cpf = input('Digite o seu cpf: ')
+                with open(caminhoArquivoadotantes, 'r') as arquivo:
+                    dados = json.load(arquivo)
+                if cpf not in dados:
+                    print('CPF não encontrado ou dados estão incorretos.')
+                    break
+                preferencias = dados[cpf]['preferencias']
+                print("\nSuas preferências:")
+                print(f"Tipo: {preferencias['tipo']}")
+                print(f"Porte: {preferencias['porte']}")
+                print(f"Sexo: {preferencias['sexo']}")
+
+                with open(caminhoArquivoAnimal, 'r') as arquivo:
+                    dadosExistentes = json.load(arquivo)
+
+                print("\nAnimais disponíveis que combinam com você: ")
+
+                for id_animal, info in dadosExistentes.items():
+                    # Verifica se "Tipo" ou "especie" existe (dependendo do formato do dado)
+                    tipo = info.get("Tipo") or info.get("especie", "Não informado")
+                    porte = info.get("Porte", "Não informado")
+                    sexo = info.get("Sexo", "Não informado")
+
+                    #print(f"Animal ID: {id_animal}")
+                    #print(f"Tipo/Espécie: {tipo}")
+                    #print(f"Porte: {porte}")
+                    #print(f"Sexo: {sexo}")
+                    #print("-" * 30)
+
+                    if (preferencias['tipo'].strip().lower() == tipo.strip().lower() and preferencias['porte'].strip().lower() == porte.strip().lower() and
+                            preferencias['sexo'].strip().lower() == sexo.strip().lower()):
+                                print('O animal ideal para você:')
+                                print(f"Animal ID: {id_animal}")
+                                print(f"Tipo/Espécie: {tipo}")
+                                print(f"Porte: {porte}")
+                                print(f"Sexo: {sexo}")
+                                print("-" * 30)
+
+
             case 6:
                 if logado == True:
                     id = input('Insira o ID da adoção: ')
@@ -205,6 +249,8 @@ def executar_menuAdocoes():
                         with open(caminhoArquivoAdocoes, 'w') as arquivo:
                             json.dump(adocoes, arquivo, indent=4)
                         print('Apagando adocao, voltando ao menu...')
+                    else:
+                        print('Não há nenhum ID associado, voltando ao menu...')
                 else:
                     print('Você não está logado, realize o login')
 

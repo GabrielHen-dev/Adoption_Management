@@ -16,6 +16,11 @@
         "idade": "24",
         "contato": "8020",
         "email": "leo@hotmail.com",
-        "senha": "leo123"
+        "senha": "leo123",
+        "preferencias": {
+            "tipo": "cachorro",
+            "porte": "pequeno",
+            "sexo": "macho"
+        }
     }
 }

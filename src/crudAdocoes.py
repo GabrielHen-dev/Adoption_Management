@@ -74,140 +74,138 @@ def executar_menuAdocoes():
                     login_usuario()
                 else:
                     print('Você já está logado, voltando ao menu...')
-                    break
             case 2:
                 while True:
-                        if logado == False:
-                            print('Você não está logado, realize o login')
-                            print('Voltando ao menu...')
-                            break
-                        choice = int(input('Registrar adoção, confirma?(1-Sim / 2-Não): '))
-                        if choice == 1:
-                            try:
-                                with open(caminhoArquivoAnimal, 'r') as arquivo:
-                                    dadosexistentes = json.load(arquivo)
-                                    print("\n---Animais para Adoção----\n", json.dumps(dados, indent=4))
-
-                                    cpf = input('Insira o seu cpf: ')
-
-                                    with open(caminhoArquivoadotantes,'r') as arquivo:
-                                        dadosexistentes = json.load(arquivo)
-
-                                    if cpf not in dados:
-                                        print('CPF não encontrado ou dados estão incorretos.')
-                                        break
-
-                                    id = input('Selecione o ID do animal que deseja adotar: ')
+                        if logado == True:
+                            choice = int(input('Registrar adoção, confirma?(1-Sim / 2-Não): '))
+                            if choice == 1:
+                                try:
                                     with open(caminhoArquivoAnimal, 'r') as arquivo:
-                                        dadosExistentes = json.load(arquivo)
-                                        if id not in dadosExistentes:
-                                            print(f'Id {id} não encontrado')
+                                        dadosexistentes = json.load(arquivo)
+                                        print("\n---Animais para Adoção----\n", json.dumps(dadosexistentes, indent=4))
+
+                                        cpf = input('Insira o seu cpf: ')
+
+                                        with open(caminhoArquivoadotantes, 'r') as arquivo:
+                                            dados = json.load(arquivo)
+
+
+                                        if cpf not in dados:
+                                            print('CPF não encontrado ou dados estão incorretos.')
                                             break
 
-                                    with open(caminhoArquivoAdocoes, 'r') as arquivo:
-                                        adocoes = json.load(arquivo)
-                                        if id in adocoes:
-                                            print('O animal não está disponível para adoção')
-                                            break
+                                        id = input('Selecione o ID do animal que deseja adotar: ')
+                                        with open(caminhoArquivoAnimal, 'r') as arquivo:
+                                            dadosExistentes = json.load(arquivo)
+                                            if id not in dadosExistentes:
+                                                print(f'Id {id} não encontrado')
+                                                break
 
-                                    usuarios = {
-                                        'nome': dadosexistentes[cpf]['nome'],
-                                        'contato': dadosexistentes[cpf]['contato'],
-                                        'email': dadosexistentes[cpf]['email']
-                                    }
-                                    animais = {
-                                        'nome': dadosExistentes[id]['nome'],
-                                        'idade': dadosExistentes[id]['idade'],
-                                        'tipo': dadosExistentes[id]['tipo'],
-                                        'raça': dadosExistentes[id]['raça'],
-                                        'sexo': dadosExistentes[id]['sexo']
-                                    }
-                                    # Cria registro de adoção
-                                    adocao = {
-                                        'cpf_adotante': cpf,
-                                        'id_animal': id,
-                                        'dados_usuario': usuarios,
-                                        'dados_animal': animais,
-                                        'status-adocao': 'Concluída'
-                                    }
-
-                                    # Carrega ou cria arquivo de adoções
-                                    try:
                                         with open(caminhoArquivoAdocoes, 'r') as arquivo:
                                             adocoes = json.load(arquivo)
-                                    except (FileNotFoundError, json.JSONDecodeError):
-                                        adocoes = {}
+                                            if id in adocoes:
+                                                print('O animal não está disponível para adoção')
+                                                break
 
-                                        # Determina o próximo ID disponível
-                                        if adocoes:
-                                            # Pega o maior ID existente e soma 1
-                                            proximo_id = max(int(k) for k in adocoes.keys()) + 1
-                                        else:
-                                            # Primeira adoção
-                                            proximo_id = 1
+                                        usuarios = {
+                                            "nome": dados[cpf]["nome"],
+                                            "contato": dados[cpf]["contato"],
+                                            "email": dados[cpf]["email"]
+                                        }
 
-                                        # Adiciona nova adoção com ID numérico sequencial
-                                        adocoes[str(proximo_id)] = adocao
-                                        print(f'Seu número de Id de adoção é {adocoes[str(proximo_id)]}')
+                                        animais = {
+                                            "nome": dadosExistentes[id]["Nome"],
+                                            "idade": dadosExistentes[id]["Idade"],
+                                            "tipo": dadosExistentes[id]["Tipo"],
+                                            "raça": dadosExistentes[id]["Raca"],
+                                            "sexo": dadosExistentes[id]["Sexo"]
+                                        }
 
-                                    # Salva no arquivo
-                                    with open(caminhoArquivoAdocoes, 'w') as arquivo:
-                                        json.dump(adocoes, arquivo, indent=4)
+                                        # Cria registro de adoção
+                                        adocao = {
+                                            "cpf_adotante": cpf,
+                                            "id_animal": id,
+                                            "dados_usuario": usuarios,
+                                            "dados_animal": animais,
+                                            "status-adocao": "Concluída"
+                                        }
 
-                                    print("\n--- Adoção realizada com sucesso! ---")
-                                    print(f"Animal: {animais['nome']}")
-                                    print(f"Adotante: {usuarios['nome']}")
-                                    print("Detalhes da adoção foram armazenados.")
-                            except Exception as e:
-                                print(f'Ocorreu um erro: {str(e)}')
+                                        # Carrega ou cria arquivo de adoções
+                                        try:
+                                            with open(caminhoArquivoAdocoes, 'r') as arquivo:
+                                                adocoes = json.load(arquivo)
+                                        except (FileNotFoundError, json.JSONDecodeError):
+                                            adocoes = {}
 
-                        elif choice == 2:
-                            print('Voltando ao menu principal...')
-                            break
+                                            # Determina o próximo ID disponível
+                                            if adocoes:
+                                                # Pega o maior ID existente e soma 1
+                                                proximo_id = max(int(k) for k in adocoes.keys()) + 1
+                                            else:
+                                                # Primeira adoção
+                                                proximo_id = 1
 
+                                            # Adiciona nova adoção com ID numérico sequencial
+                                            adocoes[str(proximo_id)] = adocao
+                                            print(f'Seu número de Id de adoção é {adocoes[str(proximo_id)]}')
+
+                                        # Salva no arquivo
+                                        with open(caminhoArquivoAdocoes, 'w') as arquivo:
+                                            json.dump(adocoes, arquivo, indent=4)
+
+                                        print("\n--- Adoção realizada com sucesso! ---")
+                                        print(f"Animal: {animais["nome"]}")
+                                        print(f"Adotante: {usuarios["nome"]}")
+                                        print("Detalhes da adoção foram armazenados.")
+                                        break
+                                except Exception as e:
+                                    print(f'Ocorreu um erro: {str(e)}')
+
+                            elif choice == 2:
+                                print('Voltando ao menu principal...')
+                                break
+
+                            else:
+                                print('Opção inválida, tente novamente...')
                         else:
-                            print('Opção inválida, tente novamente...')
+                            print('Você não está logado, realize o login. Voltando ao menu...')
+                            break
             case 3:
-                if logado == False:
-                    print('Você não está logado, realize o login')
-                    print('Voltando ao menu...')
-                    break
-                with open(caminhoArquivoAdocoes, 'r') as arquivo:
-                    dados = json.load(arquivo)
-                    print("\n---Adoções registradas----\n", json.dumps(dados, indent=4))
-            case 4:
-                if logado == False:
-                    print('Você não está logado, realize o login')
-                    print('Voltando ao menu...')
-                    break
-                id = input('Insira o ID da adoção: ')
-                with open(caminhoArquivoAdocoes, 'r') as arquivo:
-                    adocoes = json.load(arquivo)
-                if id in adocoes:
-                    adocoes[id]['status-adocao'] = input('Insira o status da adoção: ')
-                    print('Salvando alteração...')
-                    with open(caminhoArquivoAdocoes, 'w') as arquivo:
-                        json.dump(adocoes, arquivo, indent=4)
-
+                if logado == True:
+                    with open(caminhoArquivoAdocoes, 'r') as arquivo:
+                        dados = json.load(arquivo)
+                        print("\n---Adoções registradas----\n", json.dumps(dados, indent=4))
                 else:
-                    print('ID não encontrado, tente novamente...')
+                    print('Você não está logado, realize o login')
+                    print('Voltando ao menu...')
+
+            case 4:
+                if logado == True:
+                    id = input('Insira o ID da adoção: ')
+                    with open(caminhoArquivoAdocoes, 'r') as arquivo:
+                        adocoes = json.load(arquivo)
+                    if id in adocoes:
+                        adocoes[id]['status-adocao'] = input('Insira o status da adoção: ')
+                        print('Salvando alteração...')
+                        with open(caminhoArquivoAdocoes, 'w') as arquivo:
+                            json.dump(adocoes, arquivo, indent=4)
+                    else:
+                        print('ID não encontrado, tente novamente...')
+                else:
+                    print('Você não está logado, realize o login')
             case 5:
-                if logado == False:
-                    print('Você não está logado, realize o login')
-                    print('Voltando ao menu...')
-                    break
+                print('a')
             case 6:
-                if logado == False:
+                if logado == True:
+                    id = input('Insira o ID da adoção: ')
+                    with open(caminhoArquivoAdocoes, 'r') as arquivo:
+                        adocoes = json.load(arquivo)
+                    if id in adocoes:
+                        adocoes.pop(id)
+                        with open(caminhoArquivoAdocoes, 'w') as arquivo:
+                            json.dump(adocoes, arquivo, indent=4)
+                else:
                     print('Você não está logado, realize o login')
-                    print('Voltando ao menu...')
-                    break
-                id = input('Insira o ID da adoção: ')
-                with open(caminhoArquivoAdocoes, 'r') as arquivo:
-                    adocoes = json.load(arquivo)
-                if id in adocoes:
-                    adocoes.pop(id)
-                    with open(caminhoArquivoAdocoes, 'w') as arquivo:
-                        json.dump(adocoes, arquivo, indent=4)
 
             case 0:
                 print('Voltando ao menu principal...')

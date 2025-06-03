@@ -127,7 +127,7 @@ def executar_menuAdocoes():
                                             "sexo": dadosExistentes[id_animal]["Sexo"]
                                         }
 
-                                        # Cria registro de adoção
+
                                         adocao = {
                                             "cpf_adotante": cpf,
                                             "id_animal": id_animal,
@@ -136,25 +136,21 @@ def executar_menuAdocoes():
                                             "status-adocao": "Concluída"
                                         }
 
-                                        # Carrega ou cria arquivo de adoções
+
                                         try:
                                             with open(caminhoArquivoAdocoes, 'r') as arquivo:
                                                 adocoes = json.load(arquivo)
                                         except (FileNotFoundError, json.JSONDecodeError):
                                             adocoes = {}
 
-                                        # Determina o próximo ID disponível
+
                                         if adocoes:
-                                            # Pega o maior ID existente e soma 1
                                             proximo_id = max(int(k) for k in adocoes.keys()) + 1
                                         else:
-                                            # Primeira adoção
                                             proximo_id = 1
 
-                                        # Adiciona nova adoção com ID numérico sequencial
                                         adocoes[str(proximo_id)] = adocao
 
-                                        # Salva no arquivo
                                         with open(caminhoArquivoAdocoes, 'w') as arquivo:
                                             json.dump(adocoes, arquivo, indent=4)
 
@@ -207,37 +203,31 @@ def executar_menuAdocoes():
                     print('CPF não encontrado ou dados estão incorretos.')
                     break
                 preferencias = dados[cpf]['preferencias']
-                print("\nSuas preferências:")
+                print("-" * 30)
+                print("Suas preferências:")
                 print(f"Tipo: {preferencias['tipo']}")
                 print(f"Porte: {preferencias['porte']}")
                 print(f"Sexo: {preferencias['sexo']}")
+                print("-" * 30)
 
                 with open(caminhoArquivoAnimal, 'r') as arquivo:
                     dadosExistentes = json.load(arquivo)
 
-                print("\nAnimais disponíveis que combinam com você: ")
 
                 for id_animal, info in dadosExistentes.items():
-                    # Verifica se "Tipo" ou "especie" existe (dependendo do formato do dado)
+                    nome = info.get("Nome", "Não informado")
                     tipo = info.get("Tipo") or info.get("especie", "Não informado")
                     porte = info.get("Porte", "Não informado")
                     sexo = info.get("Sexo", "Não informado")
 
-                    #print(f"Animal ID: {id_animal}")
-                    #print(f"Tipo/Espécie: {tipo}")
-                    #print(f"Porte: {porte}")
-                    #print(f"Sexo: {sexo}")
-                    #print("-" * 30)
-
-                    if (preferencias['tipo'].strip().lower() == tipo.strip().lower() and preferencias['porte'].strip().lower() == porte.strip().lower() and
-                            preferencias['sexo'].strip().lower() == sexo.strip().lower()):
+                    if (preferencias['tipo'] == tipo and preferencias['porte'] == porte and preferencias['sexo'] == sexo):
                                 print('O animal ideal para você:')
                                 print(f"Animal ID: {id_animal}")
+                                print(f"Nome: {nome}")
                                 print(f"Tipo/Espécie: {tipo}")
                                 print(f"Porte: {porte}")
                                 print(f"Sexo: {sexo}")
                                 print("-" * 30)
-
 
             case 6:
                 if logado == True:
